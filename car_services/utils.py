@@ -1,11 +1,12 @@
-import phonenumbers
-from django.conf import settings
-from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate
+from django.conf import settings
+from django.db import models
+import phonenumbers
+import requests
 import json
 import jwt
-import requests
+import sys
 
 AUTH0_DOMAIN = settings.AUTH0_DOMAIN
 
@@ -13,9 +14,14 @@ def jwt_decode_token(token):
     header = jwt.get_unverified_header(token)
     jwks = requests.get(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json').json()
     public_key = None
+    print("**********************************************************************{}", file=sys.stderr)
 
     for jwk in jwks['keys']:
-        if jwk['kid'] == header.get('kid'):
+        string_kid =  header.get('kid')
+        print(header.get('kid'), file=sys.stderr)
+        print(jwk['kid'], file=sys.stderr)
+        if jwk['kid'] == string_kid:
+            print("**********************************************************************{}".format(string_kid), file=sys.stderr)
             public_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
             break  # No need to continue once public_key is found
 

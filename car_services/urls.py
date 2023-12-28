@@ -17,12 +17,14 @@ from .views import (
 )
 
 urlpatterns = [
+    #basic auth
     path("", views.index, name="index"),
     path("login/", views.login, name="login"),
     path("logout/", views.logout, name="logout"),
     path("callback/", views.callback, name="callback"),
 
-    
+    #handle incoming requests
+    #Post to DB
     path('user', LoadUserAPIView.as_view(), name="user"),
     path('user/<str:pk>', LoadUserAPIView.as_view(), name="user"),
     path('subscriber', SubscriberAPIView.as_view(), name="subscriber"),

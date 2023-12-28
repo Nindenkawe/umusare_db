@@ -1,24 +1,46 @@
-import json
-from authlib.integrations.django_client import OAuth
-from django.conf import settings
-from django.shortcuts import redirect, render, reverse
-from urllib.parse import quote_plus, urlencode
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
+from django.shortcuts import redirect, render, reverse
+from rest_framework.generics import get_object_or_404
+from authlib.integrations.django_client import OAuth
+from urllib.parse import quote_plus, urlencode
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework import status
 from django.contrib.auth.models import User
+from rest_framework.views import APIView
+from django.http import JsonResponse
+from rest_framework import status
+from django.conf import settings
 from .serializers import *
 from .models import *
-from rest_framework.generics import get_object_or_404
 from . import utils
-from django.http import JsonResponse
-import jwt
 import requests
+import jwt
+import json
 
+
+#Obtains the Access Token from the Authorization Header
+def get_token_auth_header(request):
+    auth = request.META.get("HTTP_AUTHORIZATION", None)
+    if auth:
+        parts = auth.split()
+        if parts[0].lower() == "bearer":
+            if len(parts) == 2:
+                return parts[1]
+            else:
+                response = JsonResponse({'message': 'Malformed authorization header'})
+                response.status_code = 401
+                return response
+        else:
+            response = JsonResponse({'message': 'Authorization header must start with "Bearer"'})
+            response.status_code = 401
+            return response
+    else:
+        response = JsonResponse({'message': 'Authorization header missing'})
+        response.status_code = 401
+        return response
+
+# Fetch JWKS from Auth0's JWKS endpoint
 def verify_jwt(token):
-    # Fetch JWKS from Auth0's JWKS endpoint
-    jwks_url = "https://your-auth0-domain/.well-known/jwks.json"
+    jwks_url = "https://dev-8wadsr6lchk6br0r.us.auth0.com/.well-known/jwks.json"
     jwks_response = requests.get(jwks_url)
     jwks = jwks_response.json()
 
@@ -43,31 +65,7 @@ def verify_jwt(token):
         except jwt.JWTError:
             # Handle other JWT errors
             pass
-
     return None
-
-def get_token_auth_header(request):
-    """Obtains the Access Token from the Authorization Header
-    """
-    auth = request.META.get("HTTP_AUTHORIZATION", None)
-    if auth:
-        parts = auth.split()
-        if parts[0].lower() == "bearer":
-            if len(parts) == 2:
-                return parts[1]
-            else:
-                response = JsonResponse({'message': 'Malformed authorization header'})
-                response.status_code = 401
-                return response
-        else:
-            response = JsonResponse({'message': 'Authorization header must start with "Bearer"'})
-            response.status_code = 401
-            return response
-    else:
-        response = JsonResponse({'message': 'Authorization header missing'})
-        response.status_code = 401
-        return response
-
 
 # Initialize OAuth instance
 oauth = OAuth()
@@ -102,7 +100,6 @@ def callback(request):
 
 def logout(request):
     request.session.clear()
-
     return redirect(
         f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
         + urlencode(
