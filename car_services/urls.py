@@ -14,17 +14,18 @@ from .views import (
     RoadAssistanceAPIView,
     Ownership_TransferAPIView,
     Vehicle_deregistrationAPIView,
+    Dashboard
 )
 
 urlpatterns = [
-    #basic auth
+    # auth
     path("", views.index, name="index"),
+    path("admin_dashboard", views.Dashboard, name="Dashboard"),
     path("login/", views.login, name="login"),
     path("logout/", views.logout, name="logout"),
     path("callback/", views.callback, name="callback"),
 
     #handle incoming requests
-    #Post to DB
     path('user', LoadUserAPIView.as_view(), name="user"),
     path('user/<str:pk>', LoadUserAPIView.as_view(), name="user"),
     path('subscriber', SubscriberAPIView.as_view(), name="subscriber"),

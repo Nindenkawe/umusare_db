@@ -12,12 +12,12 @@ AUTH0_DOMAIN = settings.AUTH0_DOMAIN
 
 def jwt_decode_token(token):
     header = jwt.get_unverified_header(token)
-    jwks = requests.get(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json').json()
+    jwks = requests.get(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json', timeout=5).json()  # Set timeout to 5 seconds
     public_key = None
     print("**********************************************************************{}", file=sys.stderr)
 
     for jwk in jwks['keys']:
-        string_kid =  header.get('kid')
+        string_kid = header.get('kid')
         print(header.get('kid'), file=sys.stderr)
         print(jwk['kid'], file=sys.stderr)
         if jwk['kid'] == string_kid:

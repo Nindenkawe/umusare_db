@@ -17,6 +17,52 @@ import jwt
 import json
 
 
+# Constants
+CALLBACK_URL = "car_services:callback"
+INDEX_URL = "car_services:index"
+
+# Initialize OAuth instance
+oauth = OAuth()
+
+oauth.register(
+    "auth0",
+    client_id=settings.AUTH0_CLIENT_ID,
+    client_secret=settings.AUTH0_CLIENT_SECRET,
+    client_kwargs={
+        "scope": "openid profile email",
+    },
+    server_metadata_url=f"https://{settings.AUTH0_DOMAIN}/.well-known/openid-configuration",
+)
+
+def login(request):
+    return oauth.auth0.authorize_redirect(
+        request, request.build_absolute_uri(reverse(CALLBACK_URL))
+    )
+def callback(request):
+    try:
+        token = oauth.auth0.authorize_access_token(request)
+        request.session["user"] = token
+        return redirect(reverse(INDEX_URL))
+    except Exception as e:
+        # Handle error, redirect to an error page, or log the error
+        return redirect(reverse(INDEX_URL)) 
+
+
+
+def logout(request):
+    request.session.clear()
+    return redirect(
+        f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
+        + urlencode(
+            {
+                "returnTo": request.build_absolute_uri(reverse(INDEX_URL)),
+                "client_id": settings.AUTH0_CLIENT_ID,
+            },
+            quote_via=quote_plus,
+        ),
+    )
+
+
 #Obtains the Access Token from the Authorization Header
 def get_token_auth_header(request):
     auth = request.META.get("HTTP_AUTHORIZATION", None)
@@ -38,11 +84,20 @@ def get_token_auth_header(request):
         response.status_code = 401
         return response
 
+
 # Fetch JWKS from Auth0's JWKS endpoint
 def verify_jwt(token):
     jwks_url = "https://dev-8wadsr6lchk6br0r.us.auth0.com/.well-known/jwks.json"
-    jwks_response = requests.get(jwks_url)
-    jwks = jwks_response.json()
+    
+    try:
+        # Add timeout to the request
+        jwks_response = requests.get(jwks_url, timeout=5)
+        jwks_response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
+        jwks = jwks_response.json()
+    except requests.exceptions.RequestException as e:
+        # Handle request exception (e.g., timeout, connection error)
+        print(f"Error fetching JWKS: {e}")
+        return None
 
     # Decode JWT header to get the "kid" field
     header = jwt.get_unverified_header(token)
@@ -67,50 +122,8 @@ def verify_jwt(token):
             pass
     return None
 
-# Initialize OAuth instance
-oauth = OAuth()
 
-oauth.register(
-    "auth0",
-    client_id=settings.AUTH0_CLIENT_ID,
-    client_secret=settings.AUTH0_CLIENT_SECRET,
-    client_kwargs={
-        "scope": "openid profile email",
-    },
-    server_metadata_url=f"https://{settings.AUTH0_DOMAIN}/.well-known/openid-configuration",
-)
 
-# Constants
-CALLBACK_URL = "car_services:callback"
-INDEX_URL = "car_services:index"
-
-def login(request):
-    return oauth.auth0.authorize_redirect(
-        request, request.build_absolute_uri(reverse(CALLBACK_URL))
-    )
-
-def callback(request):
-    try:
-        token = oauth.auth0.authorize_access_token(request)
-        request.session["user"] = token
-        return redirect(reverse(INDEX_URL))
-    except Exception as e:
-        # Handle error, redirect to an error page, or log the error
-        return redirect(reverse(INDEX_URL)) 
-
-def logout(request):
-    request.session.clear()
-    return redirect(
-        f"https://{settings.AUTH0_DOMAIN}/v2/logout?"
-        + urlencode(
-            {
-                "returnTo": request.build_absolute_uri(reverse(INDEX_URL)),
-                "client_id": settings.AUTH0_CLIENT_ID,
-            },
-            quote_via=quote_plus,
-        ),
-    )
-    
 def index(request):
     return render(
         request,
@@ -120,6 +133,17 @@ def index(request):
             "pretty": json.dumps(request.session.get("user"), indent=4),
         },
     )
+
+def Dashboard(request):
+    cars_data = Car.objects.count()
+    Transaction_data = Transaction.objects.all()
+    Alltransactions = Transaction.objects.count()
+    context = {
+        "Transaction_data":Transaction_data, 
+        "Cars_data":cars_data,
+        "Alltransactions":Alltransactions
+    }
+    return render(request,"admin_dashboard.html", context)
 
 class ReadOnly(BasePermission):
     def has_permission(self, request, view):
@@ -157,6 +181,18 @@ class BaseAPIView(APIView):
         )
 
     def put(self, request, pk=None, format=None):
+        instance = self.get_object(pk)
+        serializer = self.serializer_class(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(
+            {
+                'message': f'{self.model.__name__} Updated Successfully',
+                'data': serializer.data
+            }
+        )
+    
+    def patch(self, request, pk=None, format=None): 
         instance = self.get_object(pk)
         serializer = self.serializer_class(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -229,3 +265,10 @@ class Vehicle_deregistrationAPIView(BaseAPIView):
     model = Vehicle_deregistration
     serializer_class = Vehicle_deregistrationSerializer
 
+
+""" Create a Transactions function that takes the strats by taking 
+the transaction models and choosing and choosing a transaction type 
+then from selected transaction find relevant form and pass it to user 
+when form is validated hold it, and return or generate an invoice depending,
+on the service options desired and sum up total or request to pay fixed or preset deposit. 
+provide user with button to initiate payment or review or edit service form """

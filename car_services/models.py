@@ -75,6 +75,7 @@ class Transaction(models.Model):
 	transaction_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
 	Transaction_choice = (
+	('Road_side_Assist', 'Road_side_Assist'),
 	('E_Parking', 'Pay_parking'),
 	('E_Insurance', 'Buy_insurance'),
 	('Mechanical_serv', 'Book_mechanic'),
@@ -83,7 +84,7 @@ class Transaction(models.Model):
 	Transaction_type = models.CharField(
 	max_length=32,
 	choices=Transaction_choice,)
-
+	#service_form_referance_id
 	provider_id = models.CharField(max_length=15, null=True)
 	amount = models.IntegerField(default=0)
 	transaction_status = models.BooleanField(default=False)
@@ -211,7 +212,7 @@ class RoadAssistance(models.Model):
 	Assistanse_type = models.CharField(
 	max_length=32,
 	choices=Assistanse_choice,)
-	none_Ihuteuser = models.BooleanField(default=False)
+	none_Kopeuser = models.BooleanField(default=False)
 	driver_license = models.CharField(max_length=15)
 	location = models.CharField(max_length=20)
 	date = models.DateField()
@@ -313,5 +314,4 @@ class Vehicle_deregistration(models.Model):
 	selected_station = models.CharField(
 	max_length=32,
 	choices=petro_stations,)
-	price = models.AutoField(null=False)
- """
+	price = models.AutoField(null=False) """
