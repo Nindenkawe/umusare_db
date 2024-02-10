@@ -133,7 +133,8 @@ def index(request):
             "pretty": json.dumps(request.session.get("user"), indent=4),
         },
     )
-
+def home(request):
+    return render(request, 'home.html')
 def Dashboard(request):
     cars_data = Car.objects.count()
     Transaction_data = Transaction.objects.all()
