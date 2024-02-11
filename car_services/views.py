@@ -127,14 +127,15 @@ def verify_jwt(token):
 def index(request):
     return render(
         request,
-        "index.html",
-        context={
-            "session": request.session.get("user"),
-            "pretty": json.dumps(request.session.get("user"), indent=4),
-        },
+        "index.html"
     )
 def home(request):
-    return render(request, 'home.html')
+    return render(request,
+    'home.html',context={
+    "session": request.session.get("user"),
+    "pretty": json.dumps(request.session.get("user") or {}, indent=4),
+    },)
+
 def Dashboard(request):
     cars_data = Car.objects.count()
     Transaction_data = Transaction.objects.all()

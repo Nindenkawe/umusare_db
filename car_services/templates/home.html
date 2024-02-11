@@ -107,21 +107,27 @@ section:target h1 {
         <a href="#fourth"><i class="far fa-address-card"></i></a>
         </nav>
         <div class='container'>
-        <section id='first'>
-            <h1>First</h1>
-        </section>
+          <section id='first'>
+            <div class="w-20 h-20 bg-gray-200 items-center justify-center">
+            {% if session %}
+            <h6 >Welcome {{ session.userinfo.name }}!</h6>
+            <div><a href="{% url 'car_services:logout' %}">Logout</a></div>
+            <div>{{ pretty }}</div>
+            {% else %}</div>
+            {% endif %}
+          </section>
 
-        <section id='second'>
-            <h1>Second</h1>
-        </section>
+          <section id='second'>
+              <h1>Second</h1>
+          </section>
 
-        <section id='third'>
-            <h1>Third</h1>
-        </section>
+          <section id='third'>
+              <h1>Third</h1>
+          </section>
 
-        <section id='fourth'>
-            <h1>Fourth</h1>
-        </section>
+          <section id='fourth'>
+              <h1>Fourth</h1>
+          </section>
         </div>
     </body>
     <script src="https://kit.fontawesome.com/d5fba335cd.js" crossorigin="anonymous"></script>
