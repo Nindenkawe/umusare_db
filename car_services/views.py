@@ -20,6 +20,7 @@ import json
 # Constants
 CALLBACK_URL = "car_services:callback"
 INDEX_URL = "car_services:index"
+HOME_URL = "car_services:home"
 
 # Initialize OAuth instance
 oauth = OAuth()
@@ -36,7 +37,7 @@ oauth.register(
 
 def login(request):
     return oauth.auth0.authorize_redirect(
-        request, request.build_absolute_uri(reverse(CALLBACK_URL))
+        request, request.build_absolute_uri(reverse(HOME_URL))
     )
 def callback(request):
     try:

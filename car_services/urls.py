@@ -22,7 +22,7 @@ urlpatterns = [
     # auth
     path("", views.index, name="index"),
     path("admin_dashboard", views.Dashboard, name="Dashboard"),
-    path("home", views.home, name="Home"),
+    path("home", views.home, name="home"),
     path("login/", views.login, name="login"),
     path("logout/", views.logout, name="logout"),
     path("callback/", views.callback, name="callback"),

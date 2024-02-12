@@ -39,7 +39,7 @@ def jwt_get_username_from_payload_handler(payload):
 
 class PhoneNumberField(models.CharField):
     def __init__(self, *args, **kwargs):
-        kwargs['max_length'] = 20  # Adjust the max length as needed
+        kwargs['max_length'] = 10  # Adjust the max length as needed
         super().__init__(*args, **kwargs)
 
     def validate(self, value, model_instance):

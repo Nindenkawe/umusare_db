@@ -112,7 +112,7 @@ section:target h1 {
             {% if session %}
             <h6 >Welcome {{ session.userinfo.name }}!</h6>
             <div><a href="{% url 'car_services:logout' %}">Logout</a></div>
-            <div>{{ pretty }}</div>
+            {% comment %} <div>{{ pretty }}</div> {% endcomment %}
             {% else %}</div>
             {% endif %}
           </section>
