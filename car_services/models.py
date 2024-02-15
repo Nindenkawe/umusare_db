@@ -33,11 +33,11 @@ class Car(models.Model):
 	null=True,
 	)
 	#genre = models.CharField(max_length=64, null=True)
-	tin_number = models.CharField(max_length=64, null=True)
+	tin_number = models.CharField(max_length=64, null=True, unique=True)
 	yellow_cardNumber = models.CharField
-	plate_number = models.CharField(max_length=15, null=True)
-	frame_number = models.CharField(max_length=20, null=True)
-	engine_number = models.CharField(max_length=20, null=True)
+	plate_number = models.CharField(max_length=15, null=True, unique=True)
+	frame_number = models.CharField(max_length=20, null=True, unique=True)
+	engine_number = models.CharField(max_length=20, null=True, unique=True)
 	make_year = models.CharField(max_length=10, null=True)
 	vehicule_model = models.CharField(max_length=64, null=True)
 	number_of_seats = models.CharField(max_length=64, null=True)
@@ -53,6 +53,7 @@ class Car(models.Model):
 	max_length=32,
 	choices=use_of_vehicule_choice,)
 	insurance_status = models.BooleanField(default=False)
+	insurance_id = models.CharField(max_length=15, null=True, unique=True)
 	traffic_violations_status = models.BooleanField(default=False)
 	motorvehicle_inspection_date = models.DateField(null=True)
 
@@ -261,6 +262,11 @@ class Ownership_Transfer(models.Model):
 	
 
 class Book_Driver(models.Model):
+	Txn = models.OneToOneField(Transaction,
+		on_delete=models.CASCADE,
+		related_name="Book_Driver",
+		null=True,
+	)
 	when_is_driver_needed = (
 	('Quick_chauffeur', 'Now'),
 	('Schedule', 'Later'),

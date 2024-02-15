@@ -37,7 +37,7 @@ oauth.register(
 
 def login(request):
     return oauth.auth0.authorize_redirect(
-        request, request.build_absolute_uri(reverse(HOME_URL))
+        request, request.build_absolute_uri(reverse(INDEX_URL))
     )
 def callback(request):
     try:
@@ -128,13 +128,13 @@ def verify_jwt(token):
 def index(request):
     return render(
         request,
-        "index.html"
+        "foms.html"
     )
 def home(request):
     return render(request,
     'home.html',context={
     "session": request.session.get("user"),
-    "pretty": json.dumps(request.session.get("user") or {}, indent=4),
+    "auth0user_data": json.dumps(request.session.get("user") or {}, indent=4),
     },)
 
 def Dashboard(request):

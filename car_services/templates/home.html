@@ -112,21 +112,21 @@ section:target h1 {
             {% if session %}
             <h6 >Welcome {{ session.userinfo.name }}!</h6>
             <div><a href="{% url 'car_services:logout' %}">Logout</a></div>
-            {% comment %} <div>{{ pretty }}</div> {% endcomment %}
+            {% comment %} <div>{{ auth0user_data }}</div> {% endcomment %}
             {% else %}</div>
             {% endif %}
           </section>
 
           <section id='second'>
-              <h1>Second</h1>
+              <h1>Main page</h1>
           </section>
 
           <section id='third'>
-              <h1>Third</h1>
+              <h1>service forms page</h1>
           </section>
 
           <section id='fourth'>
-              <h1>Fourth</h1>
+              <h1>call button pulls user dialer app and provides and 3cx chat page</h1>
           </section>
         </div>
     </body>

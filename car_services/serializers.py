@@ -46,17 +46,17 @@ additional_validators = {
 }
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(CustomBaseSerializer):
     class Meta:
         model = User
         fields = '__all__'
 
-class SubscriberSerializer(serializers.ModelSerializer):
+class SubscriberSerializer(CustomBaseSerializer):
     class Meta:
         model = Subscriber
         fields = '__all__'
 
-class ProviderSerializer(serializers.ModelSerializer):
+class ProviderSerializer(CustomBaseSerializer):
     class Meta:
         model = Provider
         fields = '__all__'
@@ -68,52 +68,52 @@ class CarSerializer(CustomBaseSerializer):
         # Pass additional validators to the base serializer
         additional_validators = additional_validators
 
-class TransactionSerializer(serializers.ModelSerializer):
+class TransactionSerializer(CustomBaseSerializer):
     class Meta:
         model = Transaction
         fields = '__all__'
 
-class Book_DriverSerializer(serializers.ModelSerializer):
+class Book_DriverSerializer(CustomBaseSerializer):
     class Meta:
         model = Book_Driver
         fields = '__all__'
-
-class Proposed_insucoversSerializer(serializers.ModelSerializer):
+    additional_validators = additional_validators
+class Proposed_insucoversSerializer(CustomBaseSerializer):
     class Meta:
         model = Proposed_insucovers
         fields = '__all__'
 
 
-class Chauffeur_profileSerializer(serializers.ModelSerializer):
+class Chauffeur_profileSerializer(CustomBaseSerializer):
     class Meta:
         model = Chauffeur_profile
         fields = '__all__'
 
-class Mechanic_profileSerializer(serializers.ModelSerializer):
+class Mechanic_profileSerializer(CustomBaseSerializer):
     class Meta:
         model = Mechanic_profile
         fields = '__all__'
 
-class Parkingfacility_profileSerializer(serializers.ModelSerializer):
+class Parkingfacility_profileSerializer(CustomBaseSerializer):
     class Meta:
         model = Parkingfacility_profile
         fields = '__all__'
 
 
-class RoadAssistanceSerializer(serializers.ModelSerializer):
+class RoadAssistanceSerializer(CustomBaseSerializer):
     class Meta:
         model = RoadAssistance
         fields = '__all__'
 
 
-class Ownership_TransferSerializer(serializers.ModelSerializer):
+class Ownership_TransferSerializer(CustomBaseSerializer):
     class Meta:
         model = Ownership_Transfer
         fields = '__all__'
 
 
 
-class Vehicle_deregistrationSerializer(serializers.ModelSerializer):
+class Vehicle_deregistrationSerializer(CustomBaseSerializer):
     class Meta:
         model = Vehicle_deregistration
         fields = '__all__'
