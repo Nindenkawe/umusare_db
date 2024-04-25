@@ -1,6 +1,7 @@
 from wsgiref import validate
 import uuid
 from django.db import models
+from .models import *
 from django.contrib.auth.models import User
 from .utils import PhoneNumberField
 

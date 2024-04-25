@@ -15,14 +15,14 @@ from .views import (
     Ownership_TransferAPIView,
     Vehicle_deregistrationAPIView,
     Dashboard,
-    home
+    app
 )
 
 urlpatterns = [
     # auth
     path("", views.index, name="index"),
     path("admin_dashboard", views.Dashboard, name="Dashboard"),
-    path("home", views.home, name="home"),
+    path("app", views.app, name="app"),
     path("login/", views.login, name="login"),
     path("logout/", views.logout, name="logout"),
     path("callback/", views.callback, name="callback"),

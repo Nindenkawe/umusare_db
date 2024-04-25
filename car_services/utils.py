@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from rest_framework.views import APIView
 from django.contrib.auth import authenticate
 from django.conf import settings
 from django.db import models
@@ -55,3 +56,61 @@ class PhoneNumberField(models.CharField):
         # Ensure the stored value is in E.164 format
         parsed_number = phonenumbers.parse(value, None)
         return phonenumbers.format_number(parsed_number, phonenumbers.PhoneNumberFormat.E164)
+
+
+
+class MTNMoMoPaymentView(APIView):
+    def __init__(self, payeeNote, externalId, amount, currency, subscriber):
+        self.payeeNote = payeeNote
+        self.externalId = externalId
+        self.amount = amount
+        self.currency = currency
+        self.payer = Payer(partyIdType="MSISDN", partyId=subscriber.phone_number)  # Assuming Payer class defined elsewhere
+
+        if not self.payer.partyId.isdigit() or len(self.payer.partyId) != 10:
+            raise ValidationError("Invalid phone number format. Must be 10-digit number.")
+
+    def to_dict(self):
+        return {
+            "payeeNote": self.payeeNote,
+            "externalId": self.externalId,
+            "amount": self.amount,
+            "currency": self.currency,
+            "payer": self.payer.dict(),
+        }
+    def post(self, request):
+        """
+        Initiate a mobile money payment using MTN MoMo API.
+        """
+
+        # Get data from request
+        serializer = PaymentRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        payment_request = serializer.save()
+
+        # Authentication token for the MoMo API (replace with your actual token)
+        auth_token = "your_auth_token_here"
+
+        # Construct headers
+        headers = {
+            "Content-Type": "application/json",
+            "Ocp-Apim-Subscription-Key": "FFtw@Lz@6qWR83W",
+            "Authorization": f"Bearer {auth_token}"
+        }
+
+        # Convert PaymentRequest to dictionary
+        data = payment_request.dict()
+
+        # Make request to MoMo API
+        try:
+            response = requests.post("https://sandbox.momodeveloper.mtn.com/collection/v2_0/requesttowithdraw", headers=headers, json=data, timeout=5)
+            response.raise_for_status()  # Raise exception for non-200 status codes
+        except requests.exceptions.RequestException as e:
+            raise HTTPException(status_code=500, detail=f"Error: {e}")
+
+        # Handle successful response (202 Accepted)
+        if response.status_code == 202:
+            return Response({"message": "Payment request accepted"})
+        else:
+            # Handle unexpected errors (should ideally be logged)
+            raise HTTPException(status_code=500, detail="Unknown error occurred")

@@ -5,15 +5,15 @@
 }
 
 :root {
-  --primary-color: #d96aa7;
-  --secondary-color: #422c73;
-  --complimentary-color: #88bfb5;
-  --contrast-color: #f2e527;
-  --light-color: #d2a9d9;
+  --primary-color: #BFD7EA;
+  --secondary-color: #4DA167;
+  --complimentary-color: #FE9920;
+  --contrast-color: #071013;
+  --light-color: #FCFFF7;
 }
 
 .container {
-  background: #191919;
+  background: #ffffff;
   min-height: 100vh;
   font-family: Montserrat, sans-serif;
 }
@@ -71,18 +71,18 @@ section:target h1 {
   animation: 2s fadeIn forwards 0.5s;
 }
 
-#first {
+#subscriber_profile {
   background: var(--primary-color);
 }
-#second {
+#MoMo_payment {
   background: var(--complimentary-color);
 }
 
-#third {
+#car_service_form {
   background: var(--contrast-color);
 }
 
-#fourth {
+#call_us {
   background: var(--light-color);
 }
 

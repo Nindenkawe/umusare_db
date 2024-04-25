@@ -128,9 +128,9 @@ def verify_jwt(token):
 def index(request):
     return render(
         request,
-        "foms.html"
+        "index.html"
     )
-def home(request):
+def app(request):
     return render(request,
     'home.html',context={
     "session": request.session.get("user"),
@@ -274,4 +274,6 @@ the transaction models and choosing and choosing a transaction type
 then from selected transaction find relevant form and pass it to user 
 when form is validated hold it, and return or generate an invoice depending,
 on the service options desired and sum up total or request to pay fixed or preset deposit. 
-provide user with button to initiate payment or review or edit service form """
+provide user with button to initiate payment or review or edit service form 
+
+"""
