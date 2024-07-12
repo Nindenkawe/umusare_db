@@ -23,7 +23,7 @@ def create_subscribers_with_transactions():
 
 create_subscribers_with_transactions()
 
-
+""" 
 import torch
 import torch.nn as nn
 import random
@@ -61,4 +61,4 @@ def create_subscribers_with_transactions_and_pytorch():
         subscriber = Subscriber.objects.create(sub=user, phone_number='1234567890')  # Replace with your logic
         generate_random_transactions_with_pytorch(subscriber, model)
 
-create_subscribers_with_transactions_and_pytorch()
+create_subscribers_with_transactions_and_pytorch() """

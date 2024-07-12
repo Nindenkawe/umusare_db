@@ -8,4 +8,4 @@
 */__pycache__/
 *.env
 *.MD
-.vscode/settings.json
+*.vscode/
