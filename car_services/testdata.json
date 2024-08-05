@@ -1,0 +1,16 @@
+{
+    "market_size": 100000,
+    "service_mix": {
+      "Road_side_Assist": 0.1,
+      "E_Parking": 0.2,
+      "Make a claim": 0.05,
+      "Mechanical_serv": 0.08,
+      "Chauffeur_4hire": 0.02
+    },
+    "cac": 50,
+    "conversion_rate": 0.02,
+    "churn_rate": 0.01,
+    "arpu": 20,
+    "initial_subscribers": 0,
+    "timeframe": []
+  }

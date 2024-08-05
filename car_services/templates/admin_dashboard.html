@@ -20,18 +20,26 @@
     <ul class="flex-column space-y space-y-4 text-sm font-medium text-gray-500 dark:text-gray-400 md:me-4 mb-4 md:mb-0">
         <li>
             <button type="button"
-                    class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
-                    :class="{'text-blue-dark border-b border-blue-dark': activeTab === 'transactions'}"
-                    @click="activeTab = 'transactions'">
-              <span :class="{'font-bold': activeTab === 'transactions'}">Transaction</span> <b>{{ Alltransactions }}</b>
+                    class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
+                    :class="{'text-blue-dark border-b border-blue-dark': activeTab === 'activity'}"
+                    @click="activeTab = 'activity'">
+              <span :class="{'font-bold': activeTab === 'activity'}">Daily activity</span>  <b>{{ Allcar_services }}</b>
             </button>
         </li>
         <li>
             <button type="button"
-                    class="text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400 dark:focus:ring-yellow-900"
-                    :class="{'text-blue-dark border-b border-blue-dark': activeTab === 'cars'}"
-                    @click="activeTab = 'cars'">
-              <span :class="{'font-bold': activeTab === 'cars'}">Calls Traffic</span> {% comment %} <b>{{total_road-asist}}</b> {% endcomment %}
+                    class="text-purple-700 hover:text-white border border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900"
+                    :class="{'text-blue-dark border-b border-blue-dark': activeTab === 'charts'}"
+                    @click="activeTab = 'charts'">
+              <span :class="{'font-bold': activeTab === 'charts'}">Charts</span>
+            </button>
+        </li>
+        <li>
+            <button type="button"
+                    class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600 dark:focus:ring-green-800"
+                    :class="{'text-blue-dark border-b border-blue-dark': activeTab === 'Approvals'}"
+                    @click="activeTab = 'Approvals'">
+              <span :class="{'font-bold': activeTab === 'Approvals'}">Required Approvals</span>
             </button>
         </li>
         <li>
@@ -39,95 +47,20 @@
                     class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
                     :class="{'text-blue-dark border-b border-blue-dark': activeTab === 'provider'}"
                     @click="activeTab = 'provider'">
-              <span :class="{'font-bold': activeTab === 'provider'}">Online Providers</span> {% comment %} <b>{{Allproviders_online}}</b> {% endcomment %}
-            </button>
-        </li>
-        <li>
-            <button type="button"
-                    class="text-purple-700 hover:text-white border border-purple-700 hover:bg-purple-800 focus:ring-4 focus:outline-none focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500 dark:focus:ring-purple-900"
-                    :class="{'text-blue-dark border-b border-blue-dark': activeTab === 'forms'}"
-                    @click="activeTab = 'forms'">
-              <span :class="{'font-bold': activeTab === 'forms'}">More Car Forms & services</span>
+              <span :class="{'font-bold': activeTab === 'provider'}">Service Providers</span> {% comment %} <b>{{Allproviders_online}}</b> {% endcomment %}
             </button>
         </li>
     </ul>
-<section class="flex-shrink-0 text-2xl mx-auto p-2  border border-green-700 text-white dark:text-black-400 rounded-lg shadow-md" v-show="activeTab === 'transactions'">
-<div class="p-6 bg-gray-50 text-medium text-gray-500 dark:text-gray-400 dark:bg-gray-800 rounded-lg w-full">
-<h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Transactions</h3>
-
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-<div class="flex items-center justify-between pb-4">
-
-<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-<tr>
-    <th scope="col" class="p-4">
-        <div class="flex items-center">
-            <input id="checkbox-all-search" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-            <label for="checkbox-all-search" class="sr-only">checkbox</label>
-        </div>
-    </th>
-    <th scope="col" class="px-6 py-3">
-        Transaction_id
-    </th>
-    <th scope="col" class="px-6 py-3">
-        Service_Type
-    </th>
-    <th scope="col" class="px-6 py-3">
-        Price
-    </th>
-    <th scope="col" class="px-6 py-3">
-        Payment status
-    </th>
-    <th scope="col" class="px-6 py-3">
-        Invoice
-    </th>
-</tr>
-</thead>
-<tbody>
-{% for transaction in Transaction_data %}
-<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-    <td class="w-4 p-4">
-        <div class="flex items-center">
-            <input id="checkbox-table-search-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-            <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
-        </div>
-    </td>
-   
-    <td class="px-6 py-4">
-        {{transaction.transaction_id}}
-    </td>
-    <td class="px-6 py-4">
-        {{transaction.Transaction_type}}
-    </td>
-    <td class="px-6 py-4">
-        {{transaction.amount}}
-    </td>
-    <td class="px-6 py-4">
-        {{transaction.transaction_status}}
-    </td>
-    
-    <td class="px-6 py-4">
-        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
-    </td>
-</tr>
-{% endfor %}
-</tbody>
-</table>
-</div>                 
-</div>
-</div>
-</section>
-<div class="flex-shrink-0 text-2xl mx-auto p-2 border border-yellow-400 text-white dark:text-black-400 rounded-lg shadow-md" v-show="activeTab === 'cars'">
-    tracking supportline calls from the  3cX api for easy analytics and service delovery overwatch  
+<div class="flex-shrink-0 text-2xl mx-auto p-2 border border-yellow-400 text-white dark:text-black-400 rounded-lg shadow-md" v-show="activeTab === 'activity'">
+    {% include 'tables.html' %}  
 </div>
 <div class="flex-shrink-0 text-2xl mx-auto p-2  border border-blue-700 text-white dark:text-black-400 rounded-lg shadow-md" v-show="activeTab === 'provider'">
-    divs with online service provider informastion fetched from the provider microservice app
-    {% comment %} "May be a ussd endpoint that gives us an ope to work alert" {% endcomment %} 
+        
 </div>
-<div class="flex-shrink-0 text-2xl mx-auto p-2  border border-purple-700 text-white dark:text-black-400 rounded-lg shadow-md" v-show="activeTab === 'forms' || activeTab === 'forms'">
-   Other car related forms like the rra motor reg/de_reg forms
+<div class="flex-shrink-0 text-2xl mx-auto p-2  border border-purple-700 text-white dark:text-black-400 rounded-lg shadow-md" v-show="activeTab === 'charts' || activeTab === 'charts'">
+    <li @click="openChartsTab" :class="{ active: activeTab === 'charts' }">{% include "charts.html" %}</li>  
 </div>
 </div>
-
 {% endblock body %}
+  
+

@@ -139,12 +139,12 @@ def app(request):
 
 def Dashboard(request):
     cars_data = Car.objects.count()
-    Transaction_data = Transaction.objects.all()
-    Alltransactions = Transaction.objects.count()
+    Car_service_data = Book_Driver.objects.all()
+    Allcar_services = Car_services.objects.count()
     context = {
-        "Transaction_data":Transaction_data, 
+        "Car_service_data":Car_service_data, 
         "Cars_data":cars_data,
-        "Alltransactions":Alltransactions
+        "Allcar_services":Allcar_services
     }
     return render(request,"admin_dashboard.html", context)
 
@@ -225,9 +225,9 @@ class ProviderAPIView(BaseAPIView):
     model = Provider
     serializer_class = ProviderSerializer
 
-class TransactionAPIView(BaseAPIView):
-    model = Transaction
-    serializer_class = TransactionSerializer
+class Car_serviceAPIView(BaseAPIView):
+    model = Car_services
+    serializer_class = Car_serviceSerializer
 
 class CarAPIView(BaseAPIView):
     model = Car
@@ -269,9 +269,9 @@ class Vehicle_deregistrationAPIView(BaseAPIView):
     serializer_class = Vehicle_deregistrationSerializer
 
 
-""" Create a Transactions function that takes the strats by taking 
-the transaction models and choosing and choosing a transaction type 
-then from selected transaction find relevant form and pass it to user 
+""" Create a Car_services function that takes the strats by taking 
+the car_service models and choosing and choosing a car_service type 
+then from selected car_service find relevant form and pass it to user 
 when form is validated hold it, and return or generate an invoice depending,
 on the service options desired and sum up total or request to pay fixed or preset deposit. 
 provide user with button to initiate payment or review or edit service form 

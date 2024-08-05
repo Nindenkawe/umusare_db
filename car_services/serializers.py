@@ -68,9 +68,9 @@ class CarSerializer(CustomBaseSerializer):
         # Pass additional validators to the base serializer
         additional_validators = additional_validators
 
-class TransactionSerializer(CustomBaseSerializer):
+class Car_serviceSerializer(CustomBaseSerializer):
     class Meta:
-        model = Transaction
+        model = Car_services
         fields = '__all__'
 
 class Book_DriverSerializer(CustomBaseSerializer):

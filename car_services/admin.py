@@ -10,8 +10,8 @@ class SubscriberAdmin(admin.ModelAdmin):
 class CarAdmin(admin.ModelAdmin):
     pass
 
-@admin.register(Transaction)
-class TransactionAdmin(admin.ModelAdmin):
+@admin.register(Car_services)
+class Car_serviceAdmin(admin.ModelAdmin):
     pass
 
 @admin.register(Book_Driver)

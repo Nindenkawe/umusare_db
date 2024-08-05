@@ -67,38 +67,38 @@ class Car(models.Model):
 			self.plate_number == validate
 		super().save(*args, **kwargs)
 
-class Transaction(models.Model):
+class Car_services(models.Model):
 	sub = models.ForeignKey(User,
         on_delete=models.CASCADE,
-        related_name="Transaction",
+        related_name="Car_services",
         null=True,
     )
 	
-	transaction_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+	car_service_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
 
-	Transaction_choice = (
+	Car_services_choice = (
 	('Road_side_Assist', 'Road_side_Assist'),
 	('E_Parking', 'Pay_parking'),
-	('E_Insurance', 'Buy_insurance'),
+	('Make a claim', 'Insurance_claim'),
 	('Mechanical_serv', 'Book_mechanic'),
 	('Chauffeur_4hire', 'Chauffeur_4hire')
 	)
-	Transaction_type = models.CharField(
+	Car_services_type = models.CharField(
 	max_length=32,
-	choices=Transaction_choice,)
+	choices=Car_services_choice,)
 	#service_form_referance_id
 	provider_id = models.CharField(max_length=15, null=True)
 	amount = models.IntegerField(default=0)
-	transaction_status = models.BooleanField(default=False)
+	car_service_status = models.BooleanField(default=False)
 
 
 	def __str__(self):
-		return f"{self.transaction_id}"
+		return f"{self.car_service_id}"
 
-	def confirm_transaction(self, *args, **kwargs):
+	def confirm_car_service(self, *args, **kwargs):
 		self.amount = self.amount
-		if self.transaction_id == True:
-			self.transaction_status == validate
+		if self.car_service_id == True:
+			self.car_service_status == validate
 		super().save(*args, **kwargs)
 
 #make sure the Fkey here is the car's Pk
@@ -134,15 +134,15 @@ class Provider(models.Model):
 	null=True,
     )
 
-	service_offered = (
-	('E_Parking', 'E_Parking'),
-	('E_Insurance', 'E_Insurance'),
-	('Mechanical_serv', 'Mechanical_serv'),
-	('Chauffeur_4hire', 'Chauffeur_4hire')
+	service_provider = (
+	('Parking_provider', 'Parking_provider'),
+	('Insurance_claim_agent', 'Insurance_claim_agent'),
+	('Mechanical_service_provider', 'Mechanical_service_provider'),
+	('Freelance_driver', 'Freelance_driver')
 	)	
-	service_type = models.CharField(
+	service_provider_type = models.CharField(
 	max_length=32,
-	choices=service_offered,)
+	choices=service_provider,)
 	tin_number = models.IntegerField(default=0)
 	
 	def __str__(self):
@@ -207,8 +207,8 @@ class RoadAssistance(models.Model):
 		null=True,)
 	Assistanse_choice = (
 	('Quick_chauffeur', 'Driver'),
-	('Mechanical_consult', 'Mechanic'),
-	('Accident_claim', 'Road_Assistance'),
+	('Mechanical_diagonistic', 'Mechanic'),
+	('Insurance_claim', 'Road_Assistance'),
 	('Accident_Report', 'traffic/Medical_Assistance')
 	)	
 	Assistanse_type = models.CharField(
@@ -263,7 +263,7 @@ class Ownership_Transfer(models.Model):
 	
 
 class Book_Driver(models.Model):
-	Txn = models.OneToOneField(Transaction,
+	Txn = models.OneToOneField(Car_services,
 		on_delete=models.CASCADE,
 		related_name="Book_Driver",
 		null=True,
