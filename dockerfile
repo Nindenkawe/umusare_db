@@ -1,21 +1,24 @@
-# Use the official Python base image
-FROM python:3.11-slim-buster
+# Use a smaller, more efficient base image for Cloud Run
+FROM python:3.9-slim-buster
 
-# Set environment variables
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Set environment variables for optimization
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
 # Set the working directory inside the container
-WORKDIR /car_services
+WORKDIR /app
 
-# Copy the requirements file into the container
-COPY requirements.txt .
+# Copy the requirements file
+COPY requirements.txt ./
 
-# Install project dependencies
-RUN pip install -r requirements.txt
+# Install dependencies using pip
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the entire Django project into the container
+# Copy the rest of the project files
 COPY . .
 
-# Start the Django development server
-CMD ["python", "manage.py", "runserver", "0:8000"]
+# Expose the port that your Django app will listen on
+EXPOSE 8080
+
+# Define the command to run your Django app with gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "kopee.wsgi:application"]
